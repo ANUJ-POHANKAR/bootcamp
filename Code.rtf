@@ -1,0 +1,366 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}}
+{\colortbl ;\red0\green0\blue255;}
+{\*\generator Riched20 10.0.22621}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs22\lang9 <html>\par
+    <body>\par
+        <form id="orderform" autocomplete="on">\par
+            <fieldset>\par
+                <legend>\par
+                    Customer Info\par
+                </legend>\par
+                <p>\par
+                    <label>\par
+                        Name:\par
+                        <input name="cusname" type="text"\par
+                        placeholder="Enter your name" autofocus required size="50">\par
+                    </label>\par
+                </p>\par
+                <p>\par
+                    <label>\par
+                        Telephone:\par
+                        <input id="tel" name="telephone"\par
+                        type="tel" required size="50" placeholder="Pattern: 234-567-8910" pattern="(([0-9]\{3\})(-[0-9]\{3\})(-[0-9]\{4\}))">\par
+                    </label>\par
+                </p>\par
+                <p>\par
+                    <label>\par
+                        Email address:\par
+                        <input name="mail" type="email" placeholder="Enter your email address" required size="50" multiple>\par
+                    </label>\par
+                </p>\par
+            </fieldset>\par
+            <fieldset>\par
+                <legend>\par
+                    Books\par
+                </legend>\par
+                <p>\par
+                    <label>\par
+                        <input type="text" name="book" list="books" size="50">\par
+                        <datalist id="books">\par
+                            <option value="HTML5 - Bruce Lawson and Remy Sharp">\par
+                            <option value="HTML5 : Up and Running - Mark Pilgrim">\par
+                            <option value="Head First HTML5 programming - Eric Freeman">\par
+                            <option value="Mastering HTML,CSS and JavaScript - Laura Lemay">\par
+                            </option>\par
+                        </datalist>\par
+                    </label>\par
+                    <label>\par
+                        Quantity (Maximum 5): <input name="quantity" type="number" min="1" max="5">\par
+                    </label>\par
+                </p>\par
+            </fieldset>\par
+            <input type="submit" value="Submit" name="submit">\par
+        </form>\par
+    </body>\par
+</html>  \par
+\fs36 above code in javascript then launch in nginx and node js&npm \par
+\fs28 code \par
+\fs24 const express = require('express');\par
+const app = express();\par
+const path = require('path');\par
+const port = 3000;\par
+// Serve static files like your HTML, CSS, JS from the "public" directory\par
+app.use(express.static(path.join(__dirname, 'public')));\par
+// Route to serve HTML content directly\par
+app.get('/', (req, res) => \{\par
+    res.send(`\par
+    <!DOCTYPE html>\par
+    <html lang="en">\par
+    <head>\par
+        <meta charset="UTF-8">\par
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">\par
+        <title>Dynamic Form</title>\par
+    </head>\par
+    <body>\par
+        <h1>Welcome to the Dynamic Form Page</h1>\par
+        <script>\par
+            // Your JavaScript code here\par
+            const form = document.createElement("form");\par
+            form.id = "orderform";\par
+            form.autocomplete = "on";\par
+\par
+            const customerFieldset = document.createElement("fieldset");\par
+            const customerLegend = document.createElement("legend");\par
+            customerLegend.textContent = "Customer Info";\par
+            customerFieldset.appendChild(customerLegend);\par
+\par
+            const nameLabel = document.createElement("label");\par
+            nameLabel.textContent = "Name:";\par
+            const nameInput = document.createElement("input");\par
+            nameInput.name = "cusname";\par
+            nameInput.type = "text";\par
+            nameInput.placeholder = "Enter your name";\par
+            nameInput.autofocus = true;\par
+            nameInput.required = true;\par
+            nameInput.size = 50;\par
+            nameLabel.appendChild(nameInput);\par
+            customerFieldset.appendChild(nameLabel);\par
+            customerFieldset.appendChild(document.createElement("p"));\par
+\par
+            const telLabel = document.createElement("label");\par
+            telLabel.textContent = "Telephone:";\par
+            const telInput = document.createElement("input");\par
+            telInput.id = "tel";\par
+            telInput.name = "telephone";\par
+            telInput.type = "tel";\par
+            telInput.required = true;\par
+            telInput.size = 50;\par
+            telInput.placeholder = "Pattern: 234-567-8910";\par
+            telInput.pattern = "(([0-9]\{3\})(-[0-9]\{3\})(-[0-9]\{4\}))";\par
+            telLabel.appendChild(telInput);\par
+            customerFieldset.appendChild(telLabel);\par
+            customerFieldset.appendChild(document.createElement("p"));\par
+\par
+            const emailLabel = document.createElement("label");\par
+            emailLabel.textContent = "Email address:";\par
+            const emailInput = document.createElement("input");\par
+            emailInput.name = "mail";\par
+            emailInput.type = "email";\par
+            emailInput.placeholder = "Enter your email address";\par
+            emailInput.required = true;\par
+            emailInput.size = 50;\par
+            emailInput.multiple = true;\par
+            emailLabel.appendChild(emailInput);\par
+            customerFieldset.appendChild(emailLabel);\par
+\par
+            form.appendChild(customerFieldset);\par
+\par
+            const booksFieldset = document.createElement("fieldset");\par
+            const booksLegend = document.createElement("legend");\par
+            booksLegend.textContent = "Books";\par
+            booksFieldset.appendChild(booksLegend);\par
+\par
+            const bookLabel = document.createElement("label");\par
+            const bookInput = document.createElement("input");\par
+            bookInput.type = "text";\par
+            bookInput.name = "book";\par
+            bookInput.setAttribute("list", "books");\par
+            bookInput.size = 50;\par
+            const datalist = document.createElement("datalist");\par
+            datalist.id = "books";\par
+            const bookOptions = [\par
+                "HTML5 - Bruce Lawson and Remy Sharp",\par
+                "HTML5 : Up and Running - Mark Pilgrim",\par
+                "Head First HTML5 programming - Eric Freeman",\par
+                "Mastering HTML,CSS and JavaScript - Laura Lemay",\par
+            ];\par
+            bookOptions.forEach((book) => \{\par
+                const option = document.createElement("option");\par
+                option.value = book;\par
+                datalist.appendChild(option);\par
+            \});\par
+            bookLabel.appendChild(bookInput);\par
+            bookLabel.appendChild(datalist);\par
+            booksFieldset.appendChild(bookLabel);\par
+\par
+            const quantityLabel = document.createElement("label");\par
+            quantityLabel.textContent = "Quantity (Maximum 5):";\par
+            const quantityInput = document.createElement("input");\par
+            quantityInput.name = "quantity";\par
+            quantityInput.type = "number";\par
+            quantityInput.min = 1;\par
+            quantityInput.max = 5;\par
+            quantityLabel.appendChild(quantityInput);\par
+            booksFieldset.appendChild(quantityLabel);\par
+\par
+            form.appendChild(booksFieldset);\par
+\par
+            const submitButton = document.createElement("input");\par
+            submitButton.type = "submit";\par
+            submitButton.value = "Submit";\par
+            submitButton.name = "submit";\par
+            form.appendChild(submitButton);\par
+\par
+            document.body.appendChild(form);\par
+        </script>\par
+    </body>\par
+    </html>\par
+    `);\par
+\});\par
+\par
+// Start the server on port 3000\par
+app.listen(port, () => \{\par
+    console.log(`Server is running at {{\field{\*\fldinst{HYPERLINK http://localhost:$\{port\}` }}{\fldrslt{http://localhost:$\{port\}`\ul0\cf0}}}}\f0\fs24 );\par
+\}); \par
+\fs28 steps \par
+const express = require('express');\par
+const app = express();\par
+const path = require('path');\par
+\par
+const port = 3000;\par
+\par
+// Serve static files like your HTML, CSS, JS from the "public" directory\par
+app.use(express.static(path.join(__dirname, 'public')));\par
+\par
+// Route to serve HTML content directly\par
+app.get('/', (req, res) => \{\par
+    res.send(`\par
+    <!DOCTYPE html>\par
+    <html lang="en">\par
+    <head>\par
+        <meta charset="UTF-8">\par
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">\par
+        <title>Dynamic Form</title>\par
+    </head>\par
+    <body>\par
+        <h1>Welcome to the Dynamic Form Page</h1>\par
+        <script>\par
+            // Your JavaScript code here\par
+            const form = document.createElement("form");\par
+            form.id = "orderform";\par
+            form.autocomplete = "on";\par
+\par
+            const customerFieldset = document.createElement("fieldset");\par
+            const customerLegend = document.createElement("legend");\par
+            customerLegend.textContent = "Customer Info";\par
+            customerFieldset.appendChild(customerLegend);\par
+\par
+            const nameLabel = document.createElement("label");\par
+            nameLabel.textContent = "Name:";\par
+            const nameInput = document.createElement("input");\par
+            nameInput.name = "cusname";\par
+            nameInput.type = "text";\par
+            nameInput.placeholder = "Enter your name";\par
+            nameInput.autofocus = true;\par
+            nameInput.required = true;\par
+            nameInput.size = 50;\par
+            nameLabel.appendChild(nameInput);\par
+            customerFieldset.appendChild(nameLabel);\par
+            customerFieldset.appendChild(document.createElement("p"));\par
+\par
+            const telLabel = document.createElement("label");\par
+            telLabel.textContent = "Telephone:";\par
+            const telInput = document.createElement("input");\par
+            telInput.id = "tel";\par
+            telInput.name = "telephone";\par
+            telInput.type = "tel";\par
+            telInput.required = true;\par
+            telInput.size = 50;\par
+            telInput.placeholder = "Pattern: 234-567-8910";\par
+            telInput.pattern = "(([0-9]\{3\})(-[0-9]\{3\})(-[0-9]\{4\}))";\par
+            telLabel.appendChild(telInput);\par
+            customerFieldset.appendChild(telLabel);\par
+            customerFieldset.appendChild(document.createElement("p"));\par
+\par
+            const emailLabel = document.createElement("label");\par
+            emailLabel.textContent = "Email address:";\par
+            const emailInput = document.createElement("input");\par
+            emailInput.name = "mail";\par
+            emailInput.type = "email";\par
+            emailInput.placeholder = "Enter your email address";\par
+            emailInput.required = true;\par
+            emailInput.size = 50;\par
+            emailInput.multiple = true;\par
+            emailLabel.appendChild(emailInput);\par
+            customerFieldset.appendChild(emailLabel);\par
+\par
+            form.appendChild(customerFieldset);\par
+\par
+            const booksFieldset = document.createElement("fieldset");\par
+            const booksLegend = document.createElement("legend");\par
+            booksLegend.textContent = "Books";\par
+            booksFieldset.appendChild(booksLegend);\par
+\par
+            const bookLabel = document.createElement("label");\par
+            const bookInput = document.createElement("input");\par
+            bookInput.type = "text";\par
+            bookInput.name = "book";\par
+            bookInput.setAttribute("list", "books");\par
+            bookInput.size = 50;\par
+            const datalist = document.createElement("datalist");\par
+            datalist.id = "books";\par
+            const bookOptions = [\par
+                "HTML5 - Bruce Lawson and Remy Sharp",\par
+                "HTML5 : Up and Running - Mark Pilgrim",\par
+                "Head First HTML5 programming - Eric Freeman",\par
+                "Mastering HTML,CSS and JavaScript - Laura Lemay",\par
+            ];\par
+            bookOptions.forEach((book) => \{\par
+                const option = document.createElement("option");\par
+                option.value = book;\par
+                datalist.appendChild(option);\par
+            \});\par
+            bookLabel.appendChild(bookInput);\par
+            bookLabel.appendChild(datalist);\par
+            booksFieldset.appendChild(bookLabel);\par
+\par
+            const quantityLabel = document.createElement("label");\par
+            quantityLabel.textContent = "Quantity (Maximum 5):";\par
+            const quantityInput = document.createElement("input");\par
+            quantityInput.name = "quantity";\par
+            quantityInput.type = "number";\par
+            quantityInput.min = 1;\par
+            quantityInput.max = 5;\par
+            quantityLabel.appendChild(quantityInput);\par
+            booksFieldset.appendChild(quantityLabel);\par
+\par
+            form.appendChild(booksFieldset);\par
+\par
+            const submitButton = document.createElement("input");\par
+            submitButton.type = "submit";\par
+            submitButton.value = "Submit";\par
+            submitButton.name = "submit";\par
+            form.appendChild(submitButton);\par
+\par
+            document.body.appendChild(form);\par
+        </script>\par
+    </body>\par
+    </html>\par
+    `);\par
+\});\par
+----------------------------------------------------------------------------------------------\par
+# curl -fsSL {{\field{\*\fldinst{HYPERLINK https://deb.nodesource.com/setup_18.x }}{\fldrslt{https://deb.nodesource.com/setup_18.x\ul0\cf0}}}}\f0\fs28  | sudo -E bash -\fs22\par
+\fs28 sudo apt install nodejs -y\par
+node -v  # Check Node.js version\par
+npm -v   # Check npm version\par
+~# npm init -y \par
+~# npm install express\par
+# touch server.js\par
+~# vim server.js\par
+~# node server.js\par
+\par
+summary of this step \par
+Here\rquote s a summary and explanation of each step you provided for setting up a Node.js environment and running a basic Node.js application:\par
+\par
+1. curl -fsSL {{\field{\*\fldinst{HYPERLINK https://deb.nodesource.com/setup_18.x }}{\fldrslt{https://deb.nodesource.com/setup_18.x\ul0\cf0}}}}\f0\fs28  | sudo -E bash -:\par
+Purpose: This command downloads and runs a script to add the official NodeSource repository for Node.js 18.x to your system. The repository will be used to install Node.js.\par
+curl: Downloads the script.\par
+-fsSL: Options to handle errors, follow redirects, and suppress output.\par
+sudo -E bash -: Runs the script with root privileges, preserving the environment.\par
+2. sudo apt install nodejs -y:\par
+Purpose: Installs Node.js from the NodeSource repository. The -y flag automatically confirms the installation.\par
+After running the script in the previous step, the system now knows where to fetch Node.js from and installs it.\par
+3. node -v:\par
+Purpose: Checks the installed version of Node.js.\par
+-v: Displays the version of Node.js installed. You should see something like v18.x.x if Node.js 18.x was installed successfully.\par
+4. npm -v:\par
+Purpose: Checks the installed version of npm (Node Package Manager).\par
+npm is installed along with Node.js and helps manage JavaScript packages.\par
+5. npm init -y:\par
+Purpose: Initializes a new Node.js project by creating a package.json file.\par
+-y: Accepts default values for all prompts, making the initialization quick and automatic.\par
+6. npm install express:\par
+Purpose: Installs Express.js, a popular framework for building web servers in Node.js.\par
+Express simplifies routing, middleware handling, and other tasks for Node.js applications.\par
+7. touch server.js:\par
+Purpose: Creates a new file named server.js, where you will write your Node.js server code.\par
+8. vim server.js:\par
+Purpose: Opens the server.js file in the Vim text editor.\par
+This is where you\rquote ll write your Node.js application code (like creating a simple HTTP server or using Express).\par
+9. node server.js:\par
+Purpose: Runs the Node.js server.\par
+Executes the code inside server.js. If you have written server code (e.g., an Express server), this will start the server and make it listen for incoming requests.\par
+Summary of the Steps:\par
+Install Node.js and npm using the NodeSource repository.\par
+Verify installation of Node.js and npm by checking their versions.\par
+Initialize a new Node.js project with npm init -y to create a package.json.\par
+Install Express.js to simplify server-side development.\par
+Create and edit server.js to write server code.\par
+Run the server with node server.js to start the Node.js application.\par
+\fs22\par
+\par
+\par
+\par
+\par
+}
+ 
